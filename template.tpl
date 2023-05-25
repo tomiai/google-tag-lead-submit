@@ -1,32 +1,25 @@
-// Copyright 2019 Google LLC
+___TERMS_OF_SERVICE___
 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+By creating or modifying this file you agree to Google Tag Manager's Community
+Template Gallery Developer Terms of Service available at
+https://developers.google.com/tag-manager/gallery-tos (or such other URL as
+Google may provide), as modified from time to time.
 
-//     https://www.apache.org/licenses/LICENSE-2.0
-
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 ___INFO___
 
 {
-  "displayName": "Example Template",
-  "description": "This is an example template. For more information, visit https://developers.google.com/tag-manager/templates",
-  "categories": ["AFFILIATE_MARKETING", "ADVERTISING"],
-  "securityGroups": [],
-  "id": "cvt_temp_public_id",
   "type": "TAG",
+  "id": "cvt_temp_public_id",
   "version": 1,
+  "securityGroups": [],
+  "displayName": "Tomi AI Lead Submit",
+  "categories": ["ATTRIBUTION", "CONVERSIONS"],
   "brand": {
-    "thumbnail": "",
-    "displayName": "",
-    "id": "brand_dummy"
+    "id": "brand_dummy",
+    "displayName": ""
   },
+  "description": "",
   "containerContexts": [
     "WEB"
   ]
@@ -37,13 +30,48 @@ ___TEMPLATE_PARAMETERS___
 
 [
   {
-    "help": "Enter an example measurement ID. The value can be any character. This is only an example.",
-    "displayName": "Example Measurement ID",
-    "defaultValue": "foobarbaz1234",
-    "name": "MeasurementID",
-    "type": "TEXT"
+    "type": "TEXT",
+    "name": "lid",
+    "displayName": "Lead ID",
+    "simpleValueType": true
+  },
+  {
+    "type": "TEXT",
+    "name": "em",
+    "displayName": "Email",
+    "simpleValueType": true
+  },
+  {
+    "type": "TEXT",
+    "name": "ph",
+    "displayName": "Phone",
+    "simpleValueType": true
+  },
+  {
+    "type": "TEXT",
+    "name": "uid",
+    "displayName": "User ID",
+    "simpleValueType": true
   }
 ]
+
+
+___SANDBOXED_JS_FOR_WEB_TEMPLATE___
+
+const copyFromWindow = require('copyFromWindow');
+
+const tomi = copyFromWindow('tomi');
+if (tomi){
+  tomi.track({
+    lid: data.lid,
+    em: data.em,
+    ph: data.ph,
+    uid: data.uid,
+  });
+  data.gtmOnSuccess();
+} else {
+  data.gtmOnFailure("Tomi Pixel is not installed");
+}
 
 
 ___WEB_PERMISSIONS___
@@ -52,59 +80,74 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "logging",
+        "publicId": "access_globals",
         "versionId": "1"
       },
       "param": [
         {
-          "key": "environments",
+          "key": "keys",
           "value": {
-            "type": 1,
-            "string": "debug"
+            "type": 2,
+            "listItem": [
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "tomi"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  }
+                ]
+              }
+            ]
           }
         }
       ]
     },
-    "isRequired": true
-  },
-  {
-    "instance": {
-      "key": {
-        "publicId": "get_referrer",
-        "versionId": "1"
-      },
-      "param": [
-        {
-          "key": "urlParts",
-          "value": {
-            "type": 1,
-            "string": "any"
-          }
-        }
-      ]
+    "clientAnnotations": {
+      "isEditedByUser": true
     },
     "isRequired": true
   }
 ]
 
 
-___SANDBOXED_JS_FOR_WEB_TEMPLATE___
+___TESTS___
 
-// Enter your template code here.
-const queryPermission = require('queryPermission');
-const getReferrerUrl = require('getReferrerUrl');
-let referrer;
-if (queryPermission('get_referrer', 'query')) {
-  referrer = getReferrerUrl('queryParams');
-}
-
-var log = require('logToConsole');
-log('data =', data);
-
-// Call data.gtmOnSuccess when the tag is finished.
-data.gtmOnSuccess();
+scenarios: []
 
 
 ___NOTES___
 
-Created on 9/2/2019, 1:02:37 PM
+Created on 5/25/2023, 6:56:46 PM
+
+
